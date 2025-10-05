@@ -2,7 +2,7 @@
 let timer;
 let isRunning = false;
 let timeleft = 60 * 60; // 60 minutes in seconds
-let curretSessionTime = 60 * 60; // 60 minutes in seconds
+let currentSessionTime = 60 * 60; // 60 minutes in seconds
 let sessionCount = 0;
 let breakCount = 0;
 let isBreak = false;
@@ -56,7 +56,7 @@ function startTimer() {
           breakCountDisplay.textContent = breakCount;
           alert("Break Over! Time to study.");
           isBreak = false;
-          timeleft = curretSessionTime; // Reset to session time
+          timeleft = currentSessionTime; // Reset to session time
         }
         updateDisplay();
       }
@@ -75,16 +75,16 @@ function pauseTimer() {
 // Reset Timer
 function resetTimer() {
   clearIntervaal(timer);
-  isRunning = flase;
-  timeleft = curretSessionTime;
+  isRunning = false;
+  timeleft = currentSessionTime;
   updateDisplay();
 }
 
 // Set Session Duration
 function setSessionTime(minutes) {
   if (!isRunning && !isBreak) {
-    curretSessionTime = minutes * 60;
-    timeleft = curretSessionTime;
+    currentSessionTime = minutes * 60;
+    timeleft = currentSessionTime;
     updateDisplay();
     sessionBtns.forEach((btn) => {
       btn.classList.remove("active");
@@ -121,7 +121,7 @@ pauseBtn.addEventListener("click", pauseTimer);
 resetBtn.addEventListener("click", resetTimer);
 sessionBtns.forEach((btn) =>
   btn.addEventListener("click", () => {
-    if (!isRunnng) setSessionTime(parseInt(btn.dataset.time));
+    if (!isRunning) setSessionTime(parseInt(btn.dataset.time));
   })
 );
 
