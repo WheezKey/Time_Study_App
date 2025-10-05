@@ -1,62 +1,61 @@
-// Timer Variables
+// Timer variables
 let timer;
 let isRunning = false;
-let timeleft = 60 * 60; // 60 minutes in seconds
-let currentSessionTime = 60 * 60; // 60 minutes in seconds
+let timeLeft = 60 * 60;
+let currentSessionTime = 60 * 60;
 let sessionCount = 0;
 let breakCount = 0;
-let isBreak = false;
+let isBreakTime = false;
 
-// DOM Elements
-const timerDisplay = document.getElementById("timer-display");
+// DOM elements
+const timerDisplay = document.getElementById("timer");
 const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const resetBtn = document.getElementById("resetBtn");
-const sessionCountDisplay = document.getElementById("session-count");
-const breakCountDisplay = document.getElementById("break-count");
-const sessionDurationInput = document.getElementById("session-duration");
-const breakDurationInput = document.getElementById("break-duration");
+const sessionBtns = document.querySelectorAll(".session-btn");
+const sessionCountDisplay = document.getElementById("sessionCount");
+const breakCountDisplay = document.getElementById("breakCount");
 
-// Front Time
+// Format time
 function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
+  const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  return `${String(mins).padStart(2, "0")}:${String(remainingSeconds).padStart(
-    2,
-    "0"
-  )}`;
+  return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+    .toString()
+    .padStart(2, "0")}`;
 }
 
-// Update Display
+// Update display
 function updateDisplay() {
-  timerDisplay.textContent = formatTime(timeleft);
+  timerDisplay.textContent = formatTime(timeLeft);
 }
 
-// Start Timer
+// Start timer
 function startTimer() {
   if (!isRunning) {
     isRunning = true;
     timer = setInterval(() => {
-      timeleft--;
+      timeLeft--;
       updateDisplay();
 
-      if (timeleft <= 0) {
+      if (timeLeft <= 0) {
         clearInterval(timer);
         isRunning = false;
         playNotification();
 
-        if (isBreak) {
+        if (!isBreakTime) {
           sessionCount++;
           sessionCountDisplay.textContent = sessionCount;
-          alert("Study Session Complete! Time for a break.");
-          isBreak = true;
-          timeleft = 5 * 60; // 5 minutes break
+          alert("Study session completed! Time for a break.");
+          isBreakTime = true;
+          timeLeft = 5 * 60;
+          currentSessionTime = 5 * 60;
         } else {
           breakCount++;
           breakCountDisplay.textContent = breakCount;
-          alert("Break Over! Time to study.");
-          isBreak = false;
-          timeleft = currentSessionTime; // Reset to session time
+          alert("Break time over! Ready for another study session?");
+          isBreakTime = false;
+          timeLeft = currentSessionTime;
         }
         updateDisplay();
       }
@@ -64,7 +63,7 @@ function startTimer() {
   }
 }
 
-// Pause Timer
+// Pause timer
 function pauseTimer() {
   if (isRunning) {
     clearInterval(timer);
@@ -72,19 +71,19 @@ function pauseTimer() {
   }
 }
 
-// Reset Timer
+// Reset timer
 function resetTimer() {
-  clearIntervaal(timer);
+  clearInterval(timer);
   isRunning = false;
-  timeleft = currentSessionTime;
+  timeLeft = currentSessionTime;
   updateDisplay();
 }
 
-// Set Session Duration
+// Set session
 function setSessionTime(minutes) {
-  if (!isRunning && !isBreak) {
+  if (!isRunning) {
     currentSessionTime = minutes * 60;
-    timeleft = currentSessionTime;
+    timeLeft = currentSessionTime;
     updateDisplay();
     sessionBtns.forEach((btn) => {
       btn.classList.remove("active");
@@ -93,7 +92,7 @@ function setSessionTime(minutes) {
   }
 }
 
-// Notification Sound
+// Notification sound
 function playNotification() {
   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
   const oscillator = audioContext.createOscillator();
@@ -102,20 +101,20 @@ function playNotification() {
   oscillator.connect(gainNode);
   gainNode.connect(audioContext.destination);
 
-  oscillator.frequency.value = 800; // Frequency in Hz
+  oscillator.frequency.value = 800;
   oscillator.type = "square";
 
-  gainNode.gain.setValueAtTime(0.1, audioContext.currentTime); // Volume
+  gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
   gainNode.gain.exponentialRampToValueAtTime(
-    0.001,
-    audioContext.currentTime + 5
-  ); // Fade out
+    0.01,
+    audioContext.currentTime + 0.5
+  );
 
   oscillator.start(audioContext.currentTime);
-  oscillator.stop(audioContext.currentTime + 5); // Stop after 5 seconds
+  oscillator.stop(audioContext.currentTime + 0.5);
 }
 
-// Event Listeners
+// Events
 startBtn.addEventListener("click", startTimer);
 pauseBtn.addEventListener("click", pauseTimer);
 resetBtn.addEventListener("click", resetTimer);
@@ -127,21 +126,24 @@ sessionBtns.forEach((btn) =>
 
 updateDisplay();
 
-// Utilities
+// UTILITIES
 const qs = (id) => document.getElementById(id);
-const extractId = (url) => (url.match(/playlist\/([a-zA-Z0-9]+)/) || [])[1];
+const extractId = (url) =>
+  (url.match(/playlist\/([a-zA-Z0-9]+)/) || [])[1] || "";
 
 // Background GIF
-(function setBackgroundGif(url) {
+function setBackground(url) {
+  document.body.style.backgroundImage = `url('${url}')`;
+  localStorage.setItem("pixelTimerBG", url);
+}
+(function initBG() {
   const saved = localStorage.getItem("pixelTimerBG");
-  if (saved) setBackgroundGif(saved);
+  if (saved) setBackground(saved);
   qs("bgSel").value = saved || qs("bgSel").value;
-  qs("bgSel").addEventListener("change", (e) =>
-    setBackgroundGif(e.target.value)
-  );
+  qs("bgSel").addEventListener("change", (e) => setBackground(e.target.value));
 })();
 
-// Spotify Widget
+// Spotify widget
 (function initSpotify() {
   const player = qs("spotifyPlayer");
   const urlBar = qs("urlBar");
