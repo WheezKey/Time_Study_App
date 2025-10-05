@@ -1,57 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Timer App</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Timer</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="container">
-        <h1> Study Timer</h1>
+      <h1>STUDY TIMER</h1>
 
-        <div clasas="timer-display">
-            <span id="minutes">60</span>:<span id="seconds">00</span>
+      <div class="timer-display" id="timer">60:00</div>
 
-            <div class="buttons">
-                <button id="startBtn">Start</button>
-                <button id="pauseBtn">Pause</button>
-                <button id="resetBtn">Reset</button>
-             </div>
+      <div class="controls">
+        <button class="pixel-button start" id="startBtn">START</button>
+        <button class="pixel-button pause" id="pauseBtn">PAUSE</button>
+        <button class="pixel-button reset" id="resetBtn">RESET</button>
+      </div>
 
-             <div class="session-controls">
-                <button class="session-btn active" data-time="60">60 MIN</button>
-                <button class="session-btn" data-time="25">25 MIN</button>
-                <button class="session-btn" data-time="5">5 MIN</button>
-                <button class="session-btn" data-time="10">10 MIN</button>
-             </div>
+      <div class="session-controls">
+        <button class="session-btn active" data-time="60">60 MIN</button>
+        <button class="session-btn" data-time="25">25 MIN</button>
+        <button class="session-btn" data-time="5">5 MIN</button>
+        <button class="session-btn" data-time="10">10 MIN</button>
+      </div>
 
-             <div calass="session-info">
-                <p>Sesion: <span id="sessionCount">0</span |  Break: <span id="breakCount">0</span></p>
-             </div>
-
-             
-    <!... Spotify Widget ...!>
-    <div class="spotify-widget">
-        <h4>🎶SPOTIFY PLAYLIST🎶</h4>
-         <iframe id="spotifyPlayer" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZeKCAdg8kOA?utm_source=generator"></iframe>
-         <input id="urlBar" type="text" placeholder="paste playlist URL & hit LOAD">
-    <button class="sp-btn" id="loadBtn">LOAD / CHANGE</button>
-    
-    <div class="bg-select">
-      <label for="bgSel">THEME ✨</label>
-      <select id="bgSel">
-        <option value="assets/bg/neon.gif">🌌 Neon City</option>
-        <option value="assets/bg/stars.gif">🌠 Star Field</option>
-        <option value="assets/bg/wave.gif">🌊 Wave Grid</option>
-        <option value="assets/bg/palm.gif">🌴 Sunset Palm</option>
-        <option value="assets/bg/station.gif">🛰️ Space Station</option>
-        <option value="assets/bg/rain.gif">🌧️ Retro Rain</option>
-      </select>
+      <div class="session-info">
+        <p>
+          Session: <span id="sessionCount">0</span> | Break:
+          <span id="breakCount">0</span>
+        </p>
+      </div>
     </div>
-  </div>
 
-  <script src="script.js"></script>
-</body>
+    <!-- Spotify widget -->
+    <div class="spotify-widget" id="widget">
+      <h4>🎶 SPOTIFY PLAYLIST 🎶</h4>
+      <iframe
+        id="spotifyPlayer"
+        src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZeKCAdg8kOA?utm_source=generator"
+        allow="encrypted-media"
+      ></iframe>
+      <input
+        id="urlBar"
+        type="text"
+        placeholder="paste playlist URL & hit LOAD"
+      />
+      <button class="sp-btn" id="loadBtn">LOAD / CHANGE</button>
+
+      <div class="bg-select">
+        <label for="bgSel">THEME ✨</label>
+        <select id="bgSel">
+          <option value="assets/bg/neon.gif">🌌 Neon City</option>
+          <option value="assets/bg/stars.gif">🌠 Star Field</option>
+          <option value="assets/bg/wave.gif">🌊 Wave Grid</option>
+          <option value="assets/bg/palm.gif">🌴 Sunset Palm</option>
+          <option value="assets/bg/station.gif">🛰️ Space Station</option>
+          <option value="assets/bg/rain.gif">🌧️ Retro Rain</option>
+        </select>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
