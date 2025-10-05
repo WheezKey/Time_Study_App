@@ -67,11 +67,11 @@ function startTimer() {
 
 // Background List
 const bgList = [
-  "assets/bg/neon.gif", // sesi 1
-  "assets/bg/stars.gif", // sesi 2
-  "assets/bg/wave.gif", // sesi 3
-  "assets/bg/palm.gif", // sesi 4
-  "assets/bg/rain.gif", // sesi 5
+  "assets/bg/neon.gif.gif", // sesi 1
+  "assets/bg/stars.gif.gif", // sesi 2
+  "assets/bg/wave.gif.gif", // sesi 3
+  "assets/bg/palm.gif.gif", // sesi 4
+  "assets/bg/rain.gif.gif", // sesi 5
 ];
 
 let currentSession = parseInt(localStorage.getItem("sessionNumber")) || 0;
