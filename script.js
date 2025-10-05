@@ -9,9 +9,9 @@ let isBreak = false;
 
 // DOM Elements
 const timerDisplay = document.getElementById("timer-display");
-const startBtn = document.getElementById("start-btn");
-const pauseBtn = document.getElementById("pause-btn");
-const resetBtn = document.getElementById("reset-btn");
+const startBtn = document.getElementById("startBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const resetBtn = document.getElementById("resetBtn");
 const sessionCountDisplay = document.getElementById("session-count");
 const breakCountDisplay = document.getElementById("break-count");
 const sessionDurationInput = document.getElementById("session-duration");
