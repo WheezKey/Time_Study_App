@@ -16,6 +16,8 @@ body {
   position: relative;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
 }
 
 .container {
@@ -91,7 +93,7 @@ h1 {
   background-color: #f44336;
 } /* Red */
 
-sesion-control {
+.session-control {
   display: flex;
   justify-content: center;
   gap: 15px;
