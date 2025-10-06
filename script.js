@@ -165,3 +165,21 @@ function setBackground(url) {
     }
   };
 })();
+
+// === Background Theme Selector ===
+const bgSelect = document.getElementById("bgSel");
+
+function changeBackground(path) {
+  document.body.style.backgroundImage = `url(${path})`;
+  localStorage.setItem("selectedBG", path);
+}
+
+// Load background when page loads
+const savedBG = localStorage.getItem("selectedBG");
+if (savedBG) changeBackground(savedBG);
+
+// change background on selection changes
+bgSelect.addEventListener("change", (e) => {
+  const selectedPath = e.target.value;
+  changeBackground(selectedPath);
+});
