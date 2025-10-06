@@ -221,3 +221,48 @@ function stopRetroAnimation() {
   display.classList.remove("retro-glow");
   display.style.transform = "none";
 }
+
+// === 📒 NOTES FEATURE ===
+
+// Elements
+const notesToggle = document.getElementById("notesToggle");
+const notesPanel = document.getElementById("notesPanel");
+const closeNotes = document.getElementById("closeNotes");
+const notesArea = document.getElementById("notesArea");
+
+// Load saved notes
+notesArea.value = localStorage.getItem("userNotes") || "";
+
+// Auto-save notes
+notesArea.addEventListener("input", () => {
+  localStorage.setItem("userNotes", notesArea.value);
+});
+
+// Toggle open
+notesToggle.addEventListener("click", () => {
+  notesPanel.classList.add("active");
+});
+
+// Close notepad
+closeNotes.addEventListener("click", () => {
+  notesPanel.classList.remove("active");
+});
+
+// Theme sync (auto updates when theme changes)
+function syncNotesTheme() {
+  if (document.body.classList.contains("dark")) {
+    notesPanel.classList.add("dark");
+  } else {
+    notesPanel.classList.remove("dark");
+  }
+}
+
+// Run once at start
+syncNotesTheme();
+
+// Observe for theme change dynamically
+const themeObserver = new MutationObserver(syncNotesTheme);
+themeObserver.observe(document.body, {
+  attributes: true,
+  attributeFilter: ["class"],
+});
