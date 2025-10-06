@@ -63,44 +63,6 @@ function startTimer() {
   }
 }
 
-// === Background Auto Change === //
-
-// Background List
-const bgList = [
-  "assets/bg/neon.gif.gif", // sesi 1
-  "assets/bg/stars.gif.gif", // sesi 2
-  "assets/bg/wave.gif.gif", // sesi 3
-  "assets/bg/palm.gif.gif", // sesi 4
-  "assets/bg/rain.gif.gif", // sesi 5
-];
-
-let currentSession = parseInt(localStorage.getItem("sessionNumber")) || 0;
-
-// Change Background Function
-function changeBackgroundAuto() {
-  const bg = bgList[currentSession % bgList.length];
-  document.body.style.backgroundImage = `url(${bg})`;
-  document.body.style.transition = "background-image 1s ease-in-out";
-  localStorage.setItem("sessionNumber", currentSession);
-}
-
-// Run Background when first load
-changeBackgroundAuto();
-
-// Function to change background on 1 session completion
-function nextSession() {
-  currentSession++;
-  if (currentSession >= bgList.length) {
-    currentSession = 0; // back to first background
-  }
-  changeBackgroundAuto();
-}
-
-// Call nextSession when a study session is completed
-function finishSession() {
-  alert("Study session completed! Time for a break.💪");
-  nextSession();
-}
 // Pause timer
 function pauseTimer() {
   if (isRunning) {
