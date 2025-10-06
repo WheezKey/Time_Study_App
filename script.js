@@ -34,6 +34,7 @@ function updateDisplay() {
 function startTimer() {
   if (!isRunning) {
     isRunning = true;
+    startRetroAnimation(); // Added retro glow animation
     timer = setInterval(() => {
       timeLeft--;
       updateDisplay();
@@ -41,6 +42,7 @@ function startTimer() {
       if (timeLeft <= 0) {
         clearInterval(timer);
         isRunning = false;
+        stopRetroAnimation(); // Stop animation when timer ends
         playNotification();
 
         if (!isBreakTime) {
@@ -68,6 +70,7 @@ function pauseTimer() {
   if (isRunning) {
     clearInterval(timer);
     isRunning = false;
+    stopRetroAnimation(); // Stop retro animation when paused
   }
 }
 
@@ -77,6 +80,7 @@ function resetTimer() {
   isRunning = false;
   timeLeft = currentSessionTime;
   updateDisplay();
+  stopRetroAnimation(); // Stop animation on reset
 }
 
 // Set session
@@ -92,26 +96,34 @@ function setSessionTime(minutes) {
   }
 }
 
-// Notification sound
+// Notification sound (custom retro synth version)
 function playNotification() {
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  const oscillator = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const oscillator = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
 
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
+  oscillator.connect(gain);
+  gain.connect(audioCtx.destination);
 
-  oscillator.frequency.value = 800;
-  oscillator.type = "square";
+  // Retro synth melody
+  oscillator.type = "sawtooth";
+  oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
+  gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
 
-  gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-  gainNode.gain.exponentialRampToValueAtTime(
-    0.01,
-    audioContext.currentTime + 0.5
+  oscillator.frequency.linearRampToValueAtTime(
+    660,
+    audioCtx.currentTime + 0.15
+  );
+  oscillator.frequency.linearRampToValueAtTime(880, audioCtx.currentTime + 0.3);
+  oscillator.frequency.linearRampToValueAtTime(
+    440,
+    audioCtx.currentTime + 0.45
   );
 
-  oscillator.start(audioContext.currentTime);
-  oscillator.stop(audioContext.currentTime + 0.5);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+
+  oscillator.start(audioCtx.currentTime);
+  oscillator.stop(audioCtx.currentTime + 0.5);
 }
 
 // Events
@@ -134,6 +146,7 @@ const extractId = (url) =>
 // Background GIF
 function setBackground(url) {
   document.body.style.backgroundImage = `url('${url}')`;
+  document.body.style.transition = "background-image 0.8s ease-in-out"; // Smooth theme change
   localStorage.setItem("pixelTimerBG", url);
 }
 (function initBG() {
@@ -171,6 +184,7 @@ const bgSelect = document.getElementById("bgSel");
 
 function changeBackground(path) {
   document.body.style.backgroundImage = `url(${path})`;
+  document.body.style.transition = "background-image 0.8s ease-in-out"; // Smooth transition
   localStorage.setItem("selectedBG", path);
 }
 
@@ -183,3 +197,27 @@ bgSelect.addEventListener("change", (e) => {
   const selectedPath = e.target.value;
   changeBackground(selectedPath);
 });
+
+// === Retro Animation Effect ===
+function startRetroAnimation() {
+  const display = document.getElementById("timer");
+  display.classList.add("retro-glow");
+
+  // subtle vibration effect every frame
+  const interval = setInterval(() => {
+    if (!isRunning) {
+      clearInterval(interval);
+      display.classList.remove("retro-glow");
+    } else {
+      display.style.transform = `translate(${Math.random() * 2 - 1}px, ${
+        Math.random() * 2 - 1
+      }px)`;
+    }
+  }, 100);
+}
+
+function stopRetroAnimation() {
+  const display = document.getElementById("timer");
+  display.classList.remove("retro-glow");
+  display.style.transform = "none";
+}
